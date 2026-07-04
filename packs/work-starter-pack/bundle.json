@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "kind": "bundle",
+  "exportedAt": "2026-07-04T00:00:00.000Z",
+  "sourceId": "work-starter-pack",
+  "title": "Work Starter Department",
+  "data": {
+    "children": [
+      {
+        "version": 1,
+        "kind": "department",
+        "exportedAt": "2026-07-04T00:00:00.000Z",
+        "sourceId": "work",
+        "title": "Work",
+        "data": {
+          "department": {
+            "id": "work",
+            "label": "Work",
+            "icon": "briefcase",
+            "basePath": "/work",
+            "sortOrder": 1,
+            "divisions": [
+              {
+                "id": "projects",
+                "label": "Projects",
+                "icon": "folder-kanban",
+                "sortOrder": 1,
+                "pages": [
+                  {
+                    "id": "sample-project",
+                    "label": "Sample Project",
+                    "icon": "file-text",
+                    "kind": "custom",
+                    "sortOrder": 1
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

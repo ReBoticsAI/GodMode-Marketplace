@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "kind": "bundle",
+  "exportedAt": "2026-07-04T00:00:00.000Z",
+  "sourceId": "productivity-skills-pack",
+  "title": "Productivity Skills",
+  "data": {
+    "children": [
+      {
+        "version": 1,
+        "kind": "skill",
+        "exportedAt": "2026-07-04T00:00:00.000Z",
+        "sourceId": "weekly-review",
+        "title": "Weekly Review",
+        "data": {
+          "skill": {
+            "id": "weekly-review",
+            "agent_id": "intelligence",
+            "name": "weekly-review",
+            "description": "End-of-week review across tasks, calendar, and wiki",
+            "body": "1. List open tasks from the kanban.\n2. Summarize calendar events this week.\n3. Note wiki updates.\n4. Propose next-week priorities.",
+            "tools_json": "[\"list_project_cards\",\"list_calendar_events\"]",
+            "departments_json": "[]",
+            "enabled": 1,
+            "status": "active"
+          }
+        }
+      },
+      {
+        "version": 1,
+        "kind": "skill",
+        "exportedAt": "2026-07-04T00:00:00.000Z",
+        "sourceId": "meeting-prep",
+        "title": "Meeting Prep",
+        "data": {
+          "skill": {
+            "id": "meeting-prep",
+            "agent_id": "intelligence",
+            "name": "meeting-prep",
+            "description": "Prepare agenda and context before a meeting",
+            "body": "1. Ask for meeting title and attendees.\n2. Pull related wiki pages and open tasks.\n3. Draft a short agenda and talking points.",
+            "tools_json": "[]",
+            "departments_json": "[]",
+            "enabled": 1,
+            "status": "active"
+          }
+        }
+      }
+    ]
+  }
+}

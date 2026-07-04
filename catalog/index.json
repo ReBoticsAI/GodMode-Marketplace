@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "repoBase": "https://raw.githubusercontent.com/ReBoticsAI/GodMode-Marketplace/main",
+  "updatedAt": "2026-07-04T00:00:00.000Z",
+  "entries": [
+    {
+      "id": "research-agent-pack",
+      "kind": "bundle",
+      "installType": "clone",
+      "title": "Research Agent Pack",
+      "description": "A Research Agent subagent plus a research workflow skill for Intelligence.",
+      "version": "1.0.0",
+      "author": "GodMode",
+      "tags": ["agents", "research", "skills"],
+      "bundlePath": "packs/research-agent-pack/bundle.json"
+    },
+    {
+      "id": "work-starter-pack",
+      "kind": "bundle",
+      "installType": "clone",
+      "title": "Work Starter Department",
+      "description": "Work department with Projects division and a sample project page.",
+      "version": "1.0.0",
+      "author": "GodMode",
+      "tags": ["structure", "work"],
+      "bundlePath": "packs/work-starter-pack/bundle.json"
+    },
+    {
+      "id": "productivity-skills-pack",
+      "kind": "bundle",
+      "installType": "clone",
+      "title": "Productivity Skills",
+      "description": "Weekly review and meeting prep skills for Intelligence.",
+      "version": "1.0.0",
+      "author": "GodMode",
+      "tags": ["skills", "productivity"],
+      "bundlePath": "packs/productivity-skills-pack/bundle.json"
+    }
+  ]
+}
