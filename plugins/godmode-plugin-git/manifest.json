@@ -1,0 +1,12 @@
+{
+  "id": "godmode-plugin-git",
+  "kind": "plugin",
+  "installType": "plugin",
+  "title": "Git",
+  "description": "Structured git tools for Intelligence (status, diff, commit, push). Requires git on the host.",
+  "version": "0.1.0",
+  "author": "GodMode",
+  "tags": ["devtools", "git", "coding"],
+  "pluginRepo": "https://github.com/ReBoticsAI/godmode-plugin-git",
+  "pluginRef": "main"
+}
