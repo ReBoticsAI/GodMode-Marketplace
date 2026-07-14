@@ -1,0 +1,12 @@
+{
+  "id": "godmode-plugin-github",
+  "kind": "plugin",
+  "installType": "plugin",
+  "title": "GitHub",
+  "description": "GitHub PR and CI tools for Intelligence via the gh CLI. Pair with the Git plugin for full commit→PR workflow.",
+  "version": "0.1.0",
+  "author": "GodMode",
+  "tags": ["devtools", "github", "coding"],
+  "pluginRepo": "https://github.com/ReBoticsAI/godmode-plugin-github",
+  "pluginRef": "main"
+}
