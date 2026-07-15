@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ReBoticsAI/GodMode-Marketplace/schemas/portable-bundle.schema.json",
+  "title": "GodModePortableBundleV1",
+  "oneOf": [
+    { "$ref": "#/definitions/bundle" },
+    { "$ref": "#/definitions/recordEntity" }
+  ],
+  "definitions": {
+    "base": {
+      "type": "object",
+      "required": [
+        "version",
+        "kind",
+        "exportedAt",
+        "sourceId",
+        "title",
+        "data"
+      ],
+      "properties": {
+        "version": { "const": 1 },
+        "kind": { "type": "string" },
+        "exportedAt": { "type": "string", "format": "date-time" },
+        "sourceId": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "data": { "type": "object" }
+      },
+      "additionalProperties": false
+    },
+    "bundle": {
+      "allOf": [
+        { "$ref": "#/definitions/base" },
+        {
+          "properties": {
+            "kind": { "const": "bundle" },
+            "data": {
+              "type": "object",
+              "required": ["children"],
+              "properties": {
+                "children": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": { "$ref": "#/definitions/recordEntity" }
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    },
+    "recordEntity": {
+      "allOf": [
+        { "$ref": "#/definitions/base" },
+        {
+          "properties": {
+            "kind": { "const": "record" },
+            "data": {
+              "type": "object",
+              "required": ["record"],
+              "properties": {
+                "record": { "$ref": "#/definitions/record" }
+              },
+              "additionalProperties": false
+            }
+          }
+        }
+      ]
+    },
+    "record": {
+      "type": "object",
+      "required": ["id", "objectType", "data"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "objectType": {
+          "enum": ["StructureNode", "Agent", "Skill"]
+        },
+        "data": {
+          "type": "object",
+          "required": ["id"]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

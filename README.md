@@ -25,3 +25,9 @@ schemas/                 JSON Schema for CI validation
 Default official URL (override with `MARKETPLACE_OFFICIAL_URL` in Bridge):
 
 `https://raw.githubusercontent.com/ReBoticsAI/GodMode-Marketplace/main/catalog/index.json`
+
+## Validate the catalog
+
+Run `npm install`, then `npm run validate` and `npm test`. Validation checks the
+catalog and portable-bundle schemas, manifest/version consistency, kernel Record
+shapes, and retired mutation route strings.

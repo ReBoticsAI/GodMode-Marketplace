@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ReBoticsAI/GodMode-Marketplace/schemas/catalog-index.schema.json",
+  "title": "GodModeCatalogIndex",
+  "type": "object",
+  "required": ["version", "repoBase", "updatedAt", "entries"],
+  "properties": {
+    "version": { "type": "integer", "minimum": 1 },
+    "repoBase": { "type": "string", "format": "uri" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "catalog-entry.schema.json" }
+    }
+  },
+  "additionalProperties": false
+}

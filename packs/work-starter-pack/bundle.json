@@ -1,41 +1,69 @@
 {
   "version": 1,
   "kind": "bundle",
-  "exportedAt": "2026-07-04T00:00:00.000Z",
+  "exportedAt": "2026-07-14T00:00:00.000Z",
   "sourceId": "work-starter-pack",
   "title": "Work Starter Department",
   "data": {
     "children": [
       {
         "version": 1,
-        "kind": "department",
-        "exportedAt": "2026-07-04T00:00:00.000Z",
+        "kind": "record",
+        "exportedAt": "2026-07-14T00:00:00.000Z",
         "sourceId": "work",
         "title": "Work",
         "data": {
-          "department": {
+          "record": {
             "id": "work",
-            "label": "Work",
-            "icon": "briefcase",
-            "basePath": "/work",
-            "sortOrder": 1,
-            "divisions": [
-              {
-                "id": "projects",
-                "label": "Projects",
-                "icon": "folder-kanban",
-                "sortOrder": 1,
-                "pages": [
-                  {
-                    "id": "sample-project",
-                    "label": "Sample Project",
-                    "icon": "file-text",
-                    "kind": "custom",
-                    "sortOrder": 1
-                  }
-                ]
-              }
-            ]
+            "objectType": "StructureNode",
+            "data": {
+              "id": "work",
+              "parent_id": null,
+              "label": "Work",
+              "icon": "briefcase",
+              "segment": "work"
+            }
+          }
+        }
+      },
+      {
+        "version": 1,
+        "kind": "record",
+        "exportedAt": "2026-07-14T00:00:00.000Z",
+        "sourceId": "work-projects",
+        "title": "Projects",
+        "data": {
+          "record": {
+            "id": "work-projects",
+            "objectType": "StructureNode",
+            "data": {
+              "id": "work-projects",
+              "parent_id": "work",
+              "label": "Projects",
+              "icon": "folder-kanban",
+              "segment": "projects"
+            }
+          }
+        }
+      },
+      {
+        "version": 1,
+        "kind": "record",
+        "exportedAt": "2026-07-14T00:00:00.000Z",
+        "sourceId": "work-projects-sample-project",
+        "title": "Sample Project",
+        "data": {
+          "record": {
+            "id": "work-projects-sample-project",
+            "objectType": "StructureNode",
+            "data": {
+              "id": "work-projects-sample-project",
+              "parent_id": "work-projects",
+              "label": "Sample Project",
+              "icon": "file-text",
+              "segment": "sample-project",
+              "kind": "placeholder"
+            }
           }
         }
       }
