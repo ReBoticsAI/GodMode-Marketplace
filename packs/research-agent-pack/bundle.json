@@ -1,61 +1,55 @@
 {
   "version": 1,
   "kind": "bundle",
-  "exportedAt": "2026-07-04T00:00:00.000Z",
+  "exportedAt": "2026-07-14T00:00:00.000Z",
   "sourceId": "research-agent-pack",
   "title": "Research Agent Pack",
   "data": {
     "children": [
       {
         "version": 1,
-        "kind": "agent",
-        "exportedAt": "2026-07-04T00:00:00.000Z",
+        "kind": "record",
+        "exportedAt": "2026-07-14T00:00:00.000Z",
         "sourceId": "research-agent",
         "title": "Research Agent",
         "data": {
-          "agent": {
+          "record": {
             "id": "research-agent",
-            "name": "Research Agent",
-            "description": "Finds sources, summarizes findings, and saves notes to the wiki.",
-            "icon": "search",
-            "backend": "local",
-            "enabled": 1,
-            "is_template": 0,
-            "system_prompt": "You are a research specialist. Search, summarize, and cite sources. Save durable findings to the wiki.",
-            "sampling_json": "{\"temperature\":0.4,\"topP\":0.9,\"maxTokens\":4096}",
-            "thinking_json": "{\"enabled\":false}",
-            "tool_allow_json": null,
-            "auto_approve_json": "[]",
-            "model_path": null,
-            "adapter_ids_json": "[]",
-            "config_json": "{}",
-            "parent_id": "intelligence",
-            "team": "research"
-          },
-          "memories": [],
-          "ruleState": [],
-          "skillState": [],
-          "artifacts": [],
-          "workflows": []
+            "objectType": "Agent",
+            "data": {
+              "id": "research-agent",
+              "name": "Research Agent",
+              "description": "Finds sources, summarizes findings, and saves notes to the wiki.",
+              "icon": "search",
+              "backend": "local",
+              "enabled": true,
+              "parent_id": "intelligence",
+              "team": "research"
+            }
+          }
         }
       },
       {
         "version": 1,
-        "kind": "skill",
-        "exportedAt": "2026-07-04T00:00:00.000Z",
+        "kind": "record",
+        "exportedAt": "2026-07-14T00:00:00.000Z",
         "sourceId": "deep-research",
         "title": "Deep Research",
         "data": {
-          "skill": {
+          "record": {
             "id": "deep-research",
-            "agent_id": "intelligence",
-            "name": "deep-research",
-            "description": "Structured research workflow with sources and wiki output",
-            "body": "1. Clarify the research question.\n2. Search and gather 3-5 sources.\n3. Summarize in bullets with citations.\n4. Offer to create a wiki page with findings.",
-            "tools_json": "[]",
-            "departments_json": "[]",
-            "enabled": 1,
-            "status": "active"
+            "objectType": "Skill",
+            "data": {
+              "id": "deep-research",
+              "agent_id": "intelligence",
+              "name": "deep-research",
+              "description": "Structured research workflow with sources and wiki output",
+              "body": "1. Clarify the research question.\n2. Search and gather 3-5 sources.\n3. Summarize in bullets with citations.\n4. Offer to create a wiki page with findings.",
+              "tools_json": [],
+              "departments_json": [],
+              "enabled": true,
+              "status": "active"
+            }
           }
         }
       }
