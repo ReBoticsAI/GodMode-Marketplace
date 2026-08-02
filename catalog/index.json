@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repoBase": "https://raw.githubusercontent.com/ReBoticsAI/GodMode-Marketplace/main",
-  "updatedAt": "2026-07-14T00:00:00.000Z",
+  "updatedAt": "2026-08-02T00:00:00.000Z",
   "entries": [
     {
       "id": "research-agent-pack",
@@ -46,7 +46,8 @@
       "author": "GodMode",
       "tags": ["devtools", "git", "coding"],
       "pluginRepo": "https://github.com/ReBoticsAI/godmode-plugin-git",
-      "pluginRef": "main"
+      "pluginRef": "b10fd98ff315262cfc815e1f6d90ae2f23489e02",
+      "pluginDigest": "b10fd98ff315262cfc815e1f6d90ae2f23489e02"
     },
     {
       "id": "godmode-plugin-github",
@@ -58,7 +59,8 @@
       "author": "GodMode",
       "tags": ["devtools", "github", "coding"],
       "pluginRepo": "https://github.com/ReBoticsAI/godmode-plugin-github",
-      "pluginRef": "main"
+      "pluginRef": "e44bfaf2034904df440b0a54df6c4f37ff5b5254",
+      "pluginDigest": "e44bfaf2034904df440b0a54df6c4f37ff5b5254"
     }
   ]
 }

@@ -18,7 +18,22 @@
     "tags": { "type": "array", "items": { "type": "string" } },
     "bundlePath": { "type": "string" },
     "pluginRepo": { "type": "string", "format": "uri" },
-    "pluginRef": { "type": "string" },
+    "pluginRef": { "type": "string", "minLength": 1 },
+    "pluginDigest": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{7,40}$",
+      "description": "Expected git commit SHA after checkout (buyer Bridge pin check)"
+    },
+    "artifactSha256": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{64}$",
+      "description": "Aggregate SHA-256 of verified build artifacts from intake CI"
+    },
+    "ciRunUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Green GitHub Actions run URL for this pluginRef (reusable-plugin-verify)"
+    },
     "previewPath": { "type": "string" }
   },
   "allOf": [
@@ -32,7 +47,10 @@
         "not": {
           "anyOf": [
             { "required": ["pluginRepo"] },
-            { "required": ["pluginRef"] }
+            { "required": ["pluginRef"] },
+            { "required": ["pluginDigest"] },
+            { "required": ["artifactSha256"] },
+            { "required": ["ciRunUrl"] }
           ]
         }
       }
@@ -43,7 +61,7 @@
         "required": ["installType"]
       },
       "then": {
-        "required": ["pluginRepo"],
+        "required": ["pluginRepo", "pluginRef"],
         "not": { "required": ["bundlePath"] }
       }
     }

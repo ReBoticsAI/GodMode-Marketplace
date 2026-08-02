@@ -6,10 +6,21 @@ Official catalog of free GodMode packs and plugins. The GodMode app pulls `catal
 
 1. Fork this repo.
 2. Add your pack under `packs/<id>/` or plugin manifest under `plugins/<id>/`.
-3. Add an entry to `catalog/index.json`.
-4. Open a pull request using the checklist in [CONTRIBUTING.md](CONTRIBUTING.md).
+3. For **plugins**: run the [seller intake verify workflow](examples/seller-plugin-verify.yml) on a public GitHub repo, then pin `pluginRef` to that tag/commit and link `ciRunUrl`.
+4. Add an entry to `catalog/index.json`.
+5. Open a pull request using the checklist in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Private plugins stay on your GitHub account and are added in GodMode under **Marketplace → Unofficial**.
+
+## Trust layers
+
+| Layer | Where | Role |
+|-------|-------|------|
+| **Intake verify** (this repo) | GitHub Actions reusable workflow | Build + manifest checks before listing |
+| **Buyer install pin** | GodMode Bridge | Install only the catalog `pluginRef` / digest |
+| **Runtime capabilities** | GodMode Bridge | Network / tools / records deny-by-default |
+
+Intake CI does not replace Bridge runtime least privilege.
 
 ## Layout
 
@@ -18,6 +29,8 @@ catalog/index.json       Official listing index
 packs/<id>/              Catalog manifest + portable Record bundle
 plugins/<id>/            Catalog manifest (source-repository pointer)
 schemas/                 JSON Schema for CI validation
+examples/                Seller workflow caller template
+.github/workflows/       Catalog CI + reusable plugin verify
 ```
 
 Pack `manifest.json` files mirror catalog identity and version metadata. Their
@@ -44,6 +57,8 @@ contain a valid `godmode.plugin.json`. Bridge/web plugin code should declare
 (`api.kernel.apiVersion === 1`). The host rejects a declared unsupported future
 kernel API version instead of guessing compatibility. Keep the catalog entry,
 this repository's manifest, and the source plugin version coordinated.
+`pluginRef` must be a tag or commit SHA (floating `main` is rejected by
+validate).
 
 ## Catalog URL
 
@@ -62,13 +77,12 @@ npm test
 ```
 
 `npm run validate` checks the catalog and portable-bundle schemas, unique
-catalog ids, catalog/local-manifest id-kind-version agreement, bundle
-`sourceId`, Record/child id agreement, and retired mutation route strings. The
-tests assert the published pack versions and the current `StructureNode`,
-`Agent`, and `Skill` Record value shapes.
+catalog ids, catalog/local-manifest id-kind-version agreement, plugin pin
+gates (public repo + immutable `pluginRef`), bundle `sourceId`, Record/child
+id agreement, and retired mutation route strings. Set
+`MARKETPLACE_REQUIRE_PLUGIN_CI=1` to also require `ciRunUrl` on plugin entries.
+The tests assert the published pack versions, Record value shapes, and plugin
+submission gate helpers.
 
-These repository checks do not execute a host import, clone plugin repositories,
-or validate their `godmode.plugin.json`, build, registrations, migrations,
-hooks, or `kernelApiVersion`. Test clone installation and plugin submissions
-against the coordinated GodMode host version; validate plugin runtime behavior
-in the source repository as well.
+Catalog validate does not clone `pluginRepo`. Seller intake builds and checks
+`godmode.plugin.json` in the reusable workflow on the plugin repository.

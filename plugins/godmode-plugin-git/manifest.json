@@ -8,5 +8,6 @@
   "author": "GodMode",
   "tags": ["devtools", "git", "coding"],
   "pluginRepo": "https://github.com/ReBoticsAI/godmode-plugin-git",
-  "pluginRef": "main"
+  "pluginRef": "b10fd98ff315262cfc815e1f6d90ae2f23489e02",
+  "pluginDigest": "b10fd98ff315262cfc815e1f6d90ae2f23489e02"
 }
