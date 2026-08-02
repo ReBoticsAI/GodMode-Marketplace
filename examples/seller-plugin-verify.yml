@@ -1,0 +1,26 @@
+# Example caller for a public plugin repository.
+# Copy into `.github/workflows/plugin-verify.yml` in the plugin repo and adjust
+# `uses:` to a pinned Marketplace commit/tag (not floating main).
+#
+# After a green run on the release commit/tag:
+# 1. Set catalog `pluginRef` to that tag or commit SHA
+# 2. Optionally set `pluginDigest` to the full commit SHA
+# 3. Set `ciRunUrl` to the Actions run URL
+# 4. Optionally set `artifactSha256` from the workflow output
+# 5. Open a Marketplace PR
+
+name: Plugin verify
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    uses: ReBoticsAI/GodMode-Marketplace/.github/workflows/reusable-plugin-verify.yml@main
+    with:
+      # Pin GodMode core to a release the plugin was tested against.
+      godmode_ref: v0.9.1
+      validate_script: validate
+      artifact_glob: dist/**

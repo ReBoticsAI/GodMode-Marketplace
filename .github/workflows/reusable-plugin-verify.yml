@@ -1,0 +1,148 @@
+# Reusable seller intake verification (GodMode-Marketplace#3).
+# Plugin repos call this with `uses: ReBoticsAI/GodMode-Marketplace/.github/workflows/reusable-plugin-verify.yml@<pin>`
+# See examples/seller-plugin-verify.yml.
+#
+# This is verification-time isolation on a GitHub-hosted runner. It does not
+# replace GodMode Bridge buyer install pins or runtime capability grants.
+
+name: Reusable plugin verify
+
+on:
+  workflow_call:
+    inputs:
+      godmode_ref:
+        description: GodMode core git ref (tag or commit) for @godmode/plugin-api contract
+        required: false
+        type: string
+        default: v0.9.1
+      plugin_path:
+        description: Checkout path for the calling plugin repository
+        required: false
+        type: string
+        default: plugin
+      godmode_path:
+        description: Checkout path for GodMode core
+        required: false
+        type: string
+        default: GodMode
+      validate_script:
+        description: npm script to run in the plugin repo after install
+        required: false
+        type: string
+        default: validate
+      artifact_glob:
+        description: Glob of built artifacts to hash (relative to plugin_path)
+        required: false
+        type: string
+        default: dist/**
+    outputs:
+      plugin_sha:
+        description: Checked-out plugin commit SHA
+        value: ${{ jobs.verify.outputs.plugin_sha }}
+      artifact_sha256:
+        description: SHA-256 of hashed build artifacts (empty if none matched)
+        value: ${{ jobs.verify.outputs.artifact_sha256 }}
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    outputs:
+      plugin_sha: ${{ steps.meta.outputs.plugin_sha }}
+      artifact_sha256: ${{ steps.hash.outputs.artifact_sha256 }}
+    steps:
+      - name: Check out plugin
+        uses: actions/checkout@v4
+        with:
+          path: ${{ inputs.plugin_path }}
+
+      - name: Check out GodMode core
+        uses: actions/checkout@v4
+        with:
+          repository: ReBoticsAI/GodMode
+          ref: ${{ inputs.godmode_ref }}
+          path: ${{ inputs.godmode_path }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            ${{ inputs.godmode_path }}/package-lock.json
+            ${{ inputs.plugin_path }}/package-lock.json
+
+      - name: Install and build GodMode packages
+        working-directory: ${{ inputs.godmode_path }}
+        run: |
+          npm ci
+          npm run build -w @godmode/kernel
+          npm run build -w @godmode/plugin-api
+
+      - name: Install plugin
+        working-directory: ${{ inputs.plugin_path }}
+        run: npm ci
+
+      - name: Validate godmode.plugin.json
+        working-directory: ${{ inputs.plugin_path }}
+        run: |
+          node <<'EOF'
+          const fs = require("node:fs");
+          const assert = require("node:assert/strict");
+          const path = "godmode.plugin.json";
+          assert.ok(fs.existsSync(path), "godmode.plugin.json is required");
+          const m = JSON.parse(fs.readFileSync(path, "utf8"));
+          assert.equal(typeof m.id, "string");
+          assert.ok(m.id.length > 0, "manifest.id required");
+          assert.equal(typeof m.version, "string");
+          assert.ok(m.version.length > 0, "manifest.version required");
+          assert.equal(typeof m.name, "string");
+          assert.ok(m.name.length > 0, "manifest.name required");
+          if (m.bridge || m.web) {
+            assert.equal(
+              m.kernelApiVersion,
+              1,
+              "executable Bridge/web plugins must declare kernelApiVersion: 1"
+            );
+          }
+          if (m.bridge) {
+            assert.equal(typeof m.bridge.entry, "string");
+            assert.ok(m.bridge.entry.length > 0, "bridge.entry required");
+          }
+          if (m.web) {
+            assert.equal(typeof m.web.entry, "string");
+            assert.ok(m.web.entry.length > 0, "web.entry required");
+          }
+          console.log(`ok ${m.id}@${m.version}`);
+          EOF
+
+      - name: Run plugin validate
+        working-directory: ${{ inputs.plugin_path }}
+        run: npm run ${{ inputs.validate_script }}
+
+      - name: Record plugin SHA
+        id: meta
+        working-directory: ${{ inputs.plugin_path }}
+        run: echo "plugin_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Hash build artifacts
+        id: hash
+        working-directory: ${{ inputs.plugin_path }}
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(compgen -G "${{ inputs.artifact_glob }}" | sort || true)
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "artifact_sha256=" >> "$GITHUB_OUTPUT"
+            echo "No artifacts matched ${{ inputs.artifact_glob }}"
+            exit 0
+          fi
+          digest=$(printf '%s\0' "${files[@]}" | xargs -0 sha256sum | sha256sum | awk '{print $1}')
+          echo "artifact_sha256=${digest}" >> "$GITHUB_OUTPUT"
+          echo "Hashed ${#files[@]} file(s): ${digest}"
+
+      - name: Upload dist (optional)
+        if: hashFiles(format('{0}/dist/**', inputs.plugin_path)) != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-dist-${{ steps.meta.outputs.plugin_sha }}
+          path: ${{ inputs.plugin_path }}/dist
+          if-no-files-found: ignore

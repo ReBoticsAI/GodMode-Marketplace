@@ -4,10 +4,14 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import { assertPluginSubmissionGate } from "./plugin-submission-gate.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const json = async (relativePath) =>
   JSON.parse(await readFile(path.join(root, relativePath), "utf8"));
+
+/** Set MARKETPLACE_REQUIRE_PLUGIN_CI=1 to fail closed when plugin entries lack ciRunUrl. */
+const requireVerifyProof = process.env.MARKETPLACE_REQUIRE_PLUGIN_CI === "1";
 
 const entrySchema = await json("schemas/catalog-entry.schema.json");
 const indexSchema = await json("schemas/catalog-index.schema.json");
@@ -42,7 +46,28 @@ for (const entry of catalog.entries) {
   );
   assert.equal(manifest.kind, entry.kind, `${entry.id}: manifest kind must match catalog`);
 
-  if (entry.installType !== "clone") continue;
+  if (entry.installType === "plugin") {
+    assertPluginSubmissionGate(entry, { requireVerifyProof });
+    assert.equal(
+      manifest.pluginRepo,
+      entry.pluginRepo,
+      `${entry.id}: manifest pluginRepo must match catalog`
+    );
+    assert.equal(
+      manifest.pluginRef,
+      entry.pluginRef,
+      `${entry.id}: manifest pluginRef must match catalog`
+    );
+    if (entry.pluginDigest !== undefined) {
+      assert.equal(
+        manifest.pluginDigest,
+        entry.pluginDigest,
+        `${entry.id}: manifest pluginDigest must match catalog`
+      );
+    }
+    continue;
+  }
+
   const bundle = await json(entry.bundlePath);
   assert(
     validateBundle(bundle),
@@ -96,8 +121,10 @@ for (const file of scannedFiles) {
   }
 }
 
+const pluginCount = catalog.entries.filter((entry) => entry.installType === "plugin").length;
 console.log(
-  `Validated ${catalog.entries.length} catalog entries and ${
-    catalog.entries.filter((entry) => entry.installType === "clone").length
-  } kernel-native packs.`
+  `Validated ${catalog.entries.length} catalog entries (${pluginCount} plugins, pin gate on` +
+    `${requireVerifyProof ? ", verify-proof required" : ""}), and ${
+      catalog.entries.filter((entry) => entry.installType === "clone").length
+    } kernel-native packs.`
 );
