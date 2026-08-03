@@ -23,71 +23,101 @@ ajv.addSchema(entrySchema);
 const validateIndex = ajv.compile(indexSchema);
 const validateBundle = ajv.compile(bundleSchema);
 
-const catalog = await json("catalog/index.json");
-assert(
-  validateIndex(catalog),
-  `catalog/index.json failed schema validation:\n${ajv.errorsText(validateIndex.errors, {
-    separator: "\n",
-  })}`
-);
-
-const ids = catalog.entries.map((entry) => entry.id);
-assert.equal(new Set(ids).size, ids.length, "catalog entry ids must be unique");
-
-for (const entry of catalog.entries) {
-  const manifest = await json(
-    `${entry.installType === "clone" ? "packs" : "plugins"}/${entry.id}/manifest.json`
+async function validateCatalogFile(relativePath, { requireLocalArtifacts }) {
+  const catalog = await json(relativePath);
+  assert(
+    validateIndex(catalog),
+    `${relativePath} failed schema validation:\n${ajv.errorsText(validateIndex.errors, {
+      separator: "\n",
+    })}`
   );
-  assert.equal(manifest.id, entry.id, `${entry.id}: manifest id must match catalog`);
-  assert.equal(
-    manifest.version,
-    entry.version,
-    `${entry.id}: manifest and catalog versions must match`
-  );
-  assert.equal(manifest.kind, entry.kind, `${entry.id}: manifest kind must match catalog`);
 
-  if (entry.installType === "plugin") {
-    assertPluginSubmissionGate(entry, { requireVerifyProof });
-    assert.equal(
-      manifest.pluginRepo,
-      entry.pluginRepo,
-      `${entry.id}: manifest pluginRepo must match catalog`
+  const ids = catalog.entries.map((entry) => entry.id);
+  assert.equal(new Set(ids).size, ids.length, `${relativePath}: catalog entry ids must be unique`);
+
+  for (const entry of catalog.entries) {
+    if (entry.installType === "plugin") {
+      assertPluginSubmissionGate(entry, { requireVerifyProof });
+    }
+
+    if (!requireLocalArtifacts) continue;
+
+    const manifest = await json(
+      `${entry.installType === "clone" ? "packs" : "plugins"}/${entry.id}/manifest.json`
     );
+    assert.equal(manifest.id, entry.id, `${entry.id}: manifest id must match catalog`);
     assert.equal(
-      manifest.pluginRef,
-      entry.pluginRef,
-      `${entry.id}: manifest pluginRef must match catalog`
+      manifest.version,
+      entry.version,
+      `${entry.id}: manifest and catalog versions must match`
     );
-    if (entry.pluginDigest !== undefined) {
+    assert.equal(manifest.kind, entry.kind, `${entry.id}: manifest kind must match catalog`);
+
+    if (entry.installType === "plugin") {
       assert.equal(
-        manifest.pluginDigest,
-        entry.pluginDigest,
-        `${entry.id}: manifest pluginDigest must match catalog`
+        manifest.pluginRepo,
+        entry.pluginRepo,
+        `${entry.id}: manifest pluginRepo must match catalog`
+      );
+      assert.equal(
+        manifest.pluginRef,
+        entry.pluginRef,
+        `${entry.id}: manifest pluginRef must match catalog`
+      );
+      if (entry.pluginDigest !== undefined) {
+        assert.equal(
+          manifest.pluginDigest,
+          entry.pluginDigest,
+          `${entry.id}: manifest pluginDigest must match catalog`
+        );
+      }
+      continue;
+    }
+
+    const bundle = await json(entry.bundlePath);
+    assert(
+      validateBundle(bundle),
+      `${entry.bundlePath} failed schema validation:\n${ajv.errorsText(validateBundle.errors, {
+        separator: "\n",
+      })}`
+    );
+    assert.equal(bundle.sourceId, entry.id, `${entry.id}: bundle sourceId must match catalog`);
+
+    for (const child of bundle.data.children) {
+      const { record } = child.data;
+      assert.equal(record.id, child.sourceId, `${entry.id}: record id must match sourceId`);
+      assert.equal(
+        record.data.id,
+        record.id,
+        `${entry.id}: Record.data.id must match Record.id`
       );
     }
-    continue;
   }
 
-  const bundle = await json(entry.bundlePath);
-  assert(
-    validateBundle(bundle),
-    `${entry.bundlePath} failed schema validation:\n${ajv.errorsText(
-      validateBundle.errors,
-      { separator: "\n" }
-    )}`
+  const pluginCount = catalog.entries.filter((entry) => entry.installType === "plugin").length;
+  const cloneCount = catalog.entries.filter((entry) => entry.installType === "clone").length;
+  console.log(
+    `Validated ${relativePath}: ${catalog.entries.length} entries (${pluginCount} plugins, ${cloneCount} packs` +
+      `${requireVerifyProof ? ", verify-proof required" : ""})`
   );
-  assert.equal(bundle.sourceId, entry.id, `${entry.id}: bundle sourceId must match catalog`);
-
-  for (const child of bundle.data.children) {
-    const { record } = child.data;
-    assert.equal(record.id, child.sourceId, `${entry.id}: record id must match sourceId`);
-    assert.equal(
-      record.data.id,
-      record.id,
-      `${entry.id}: Record.data.id must match Record.id`
-    );
-  }
+  return catalog;
 }
+
+const official = await validateCatalogFile("catalog/official/index.json", {
+  requireLocalArtifacts: true,
+});
+await validateCatalogFile("catalog/community/index.json", {
+  // Community listings may start as index-only rows; local packs/plugins optional until mirrored.
+  requireLocalArtifacts: false,
+});
+
+// Legacy path: must match Official so old MARKETPLACE_OFFICIAL_URL keep working.
+const legacy = await json("catalog/index.json");
+assert.deepEqual(
+  legacy.entries.map((e) => e.id).sort(),
+  official.entries.map((e) => e.id).sort(),
+  "catalog/index.json must stay in sync with catalog/official/index.json (legacy Official URL)"
+);
 
 const retiredRouteFragments = [
   ["/api", "departments"],
@@ -121,10 +151,4 @@ for (const file of scannedFiles) {
   }
 }
 
-const pluginCount = catalog.entries.filter((entry) => entry.installType === "plugin").length;
-console.log(
-  `Validated ${catalog.entries.length} catalog entries (${pluginCount} plugins, pin gate on` +
-    `${requireVerifyProof ? ", verify-proof required" : ""}), and ${
-      catalog.entries.filter((entry) => entry.installType === "clone").length
-    } kernel-native packs.`
-);
+console.log("Dual catalog layout OK (official + community; legacy index synced).");

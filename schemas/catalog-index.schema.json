@@ -10,7 +10,7 @@
     "updatedAt": { "type": "string", "format": "date-time" },
     "entries": {
       "type": "array",
-      "minItems": 1,
+      "minItems": 0,
       "items": { "$ref": "catalog-entry.schema.json" }
     }
   },

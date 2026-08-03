@@ -1,0 +1,66 @@
+{
+  "version": 2,
+  "repoBase": "https://raw.githubusercontent.com/ReBoticsAI/GodMode-Marketplace/main",
+  "updatedAt": "2026-08-02T00:00:00.000Z",
+  "entries": [
+    {
+      "id": "research-agent-pack",
+      "kind": "bundle",
+      "installType": "clone",
+      "title": "Research Agent Pack",
+      "description": "A Research Agent subagent plus a research workflow skill for Intelligence.",
+      "version": "1.1.0",
+      "author": "GodMode",
+      "tags": ["agents", "research", "skills"],
+      "bundlePath": "packs/research-agent-pack/bundle.json"
+    },
+    {
+      "id": "work-starter-pack",
+      "kind": "bundle",
+      "installType": "clone",
+      "title": "Work Starter Department",
+      "description": "Work department with Projects division and a sample project page.",
+      "version": "1.1.0",
+      "author": "GodMode",
+      "tags": ["structure", "work"],
+      "bundlePath": "packs/work-starter-pack/bundle.json"
+    },
+    {
+      "id": "productivity-skills-pack",
+      "kind": "bundle",
+      "installType": "clone",
+      "title": "Productivity Skills",
+      "description": "Weekly review and meeting prep skills for Intelligence.",
+      "version": "1.1.0",
+      "author": "GodMode",
+      "tags": ["skills", "productivity"],
+      "bundlePath": "packs/productivity-skills-pack/bundle.json"
+    },
+    {
+      "id": "godmode-plugin-git",
+      "kind": "plugin",
+      "installType": "plugin",
+      "title": "Git",
+      "description": "Structured git tools for Intelligence (status, diff, commit, push). Requires git on the host. Best with a real git checkout as the coding root.",
+      "version": "0.1.0",
+      "author": "GodMode",
+      "tags": ["devtools", "git", "coding"],
+      "pluginRepo": "https://github.com/ReBoticsAI/godmode-plugin-git",
+      "pluginRef": "b10fd98ff315262cfc815e1f6d90ae2f23489e02",
+      "pluginDigest": "b10fd98ff315262cfc815e1f6d90ae2f23489e02"
+    },
+    {
+      "id": "godmode-plugin-github",
+      "kind": "plugin",
+      "installType": "plugin",
+      "title": "GitHub",
+      "description": "GitHub PR and CI tools for Intelligence via the gh CLI (create, checks, merge). Pair with the Git plugin. Requires gh auth or GITHUB_TOKEN.",
+      "version": "0.1.0",
+      "author": "GodMode",
+      "tags": ["devtools", "github", "coding"],
+      "pluginRepo": "https://github.com/ReBoticsAI/godmode-plugin-github",
+      "pluginRef": "e44bfaf2034904df440b0a54df6c4f37ff5b5254",
+      "pluginDigest": "e44bfaf2034904df440b0a54df6c4f37ff5b5254"
+    }
+  ]
+}
