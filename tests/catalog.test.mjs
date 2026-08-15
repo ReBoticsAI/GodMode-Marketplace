@@ -14,6 +14,16 @@ const packPaths = [
   "packs/productivity-skills-pack/bundle.json",
 ];
 
+test("legacy unofficial catalog aliases community", async () => {
+  const community = await json("catalog/community/index.json");
+  const unofficial = await json("catalog/unofficial/index.json");
+  assert.deepEqual(
+    unofficial.entries.map((entry) => entry.id).sort(),
+    community.entries.map((entry) => entry.id).sort()
+  );
+  assert.ok(community.entries.some((entry) => entry.id === "community-ping"));
+});
+
 test("catalog and pack manifests publish the same versions", async () => {
   const catalog = await json("catalog/index.json");
   assert.equal(catalog.version, 2);

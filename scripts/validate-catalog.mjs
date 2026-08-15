@@ -106,7 +106,7 @@ async function validateCatalogFile(relativePath, { requireLocalArtifacts }) {
 const official = await validateCatalogFile("catalog/official/index.json", {
   requireLocalArtifacts: true,
 });
-await validateCatalogFile("catalog/community/index.json", {
+const community = await validateCatalogFile("catalog/community/index.json", {
   // Community listings may start as index-only rows; local packs/plugins optional until mirrored.
   requireLocalArtifacts: false,
 });
@@ -117,6 +117,14 @@ assert.deepEqual(
   legacy.entries.map((e) => e.id).sort(),
   official.entries.map((e) => e.id).sort(),
   "catalog/index.json must stay in sync with catalog/official/index.json (legacy Official URL)"
+);
+
+// Legacy Unofficial path: must match Community so old MARKETPLACE_UNOFFICIAL_URL keep working.
+const unofficial = await json("catalog/unofficial/index.json");
+assert.deepEqual(
+  unofficial.entries.map((e) => e.id).sort(),
+  community.entries.map((e) => e.id).sort(),
+  "catalog/unofficial/index.json must stay in sync with catalog/community/index.json (legacy Community URL)"
 );
 
 const retiredRouteFragments = [
@@ -151,4 +159,6 @@ for (const file of scannedFiles) {
   }
 }
 
-console.log("Dual catalog layout OK (official + community; legacy index synced).");
+console.log(
+  "Dual catalog layout OK (official + community; legacy Official and Unofficial indexes synced)."
+);
