@@ -1,6 +1,21 @@
 {
   "version": 2,
   "repoBase": "https://raw.githubusercontent.com/ReBoticsAI/GodMode-Marketplace/main",
-  "updatedAt": "2026-08-02T00:00:00.000Z",
-  "entries": []
+  "updatedAt": "2026-08-15T19:20:00.000Z",
+  "entries": [
+    {
+      "id": "community-ping",
+      "kind": "plugin",
+      "installType": "plugin",
+      "title": "Community Ping",
+      "description": "Tiny OSS health-ping tool. Adds a community_ping Bridge tool that returns process health and can optionally fetch example.com.",
+      "version": "0.1.0",
+      "author": "Dane Schell",
+      "tags": ["community", "health", "tools", "oss"],
+      "pluginRepo": "https://github.com/ReBoticsAI/gm-442-smoke-test",
+      "pluginRef": "797f1556cbf3291a57502323e529c16fc638e3c6",
+      "pluginDigest": "797f1556cbf3291a57502323e529c16fc638e3c6",
+      "artifactSha256": "ded97a9625e52dbef57952091b0492dc622c0d1815933ac2275301e2963848fc"
+    }
+  ]
 }
