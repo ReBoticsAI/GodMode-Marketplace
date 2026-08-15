@@ -8,12 +8,13 @@
 | **Community** | `catalog/community/index.json` | **User sellers** (the only public seller path) |
 
 `catalog/index.json` is a **legacy alias** of Official for older GodMode installs. Do not add Community entries there.
+`catalog/unofficial/index.json` is a **legacy alias** of Community for older GodMode installs that still fetch `MARKETPLACE_UNOFFICIAL_URL`. Keep it in sync with `catalog/community/index.json`.
 
 Public sellers submit to **Community**. Do not open PRs that add third-party plugins to Official.
 
 ## PR checklist (Community sellers)
 
-- [ ] Entry added to `catalog/community/index.json` with unique `id`
+- [ ] Entry added to `catalog/community/index.json` with unique `id` (mirror the same ids in `catalog/unofficial/index.json`)
 - [ ] Plugin source is a **public** GitHub repo with a valid `godmode.plugin.json`
 - [ ] Plugin `pluginRef` is an **immutable tag or commit SHA** (not `main` / `master` / `HEAD`)
 - [ ] Plugin entry links a **green** reusable verify run via `ciRunUrl` for that same ref
