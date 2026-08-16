@@ -8,6 +8,7 @@ Dual catalog for GodMode:
 | **Community** | `catalog/community/index.json` | Community (user sellers) |
 
 Legacy `catalog/index.json` mirrors Official for older GodMode `MARKETPLACE_OFFICIAL_URL` defaults.
+Legacy `catalog/unofficial/index.json` mirrors Community for older GodMode `MARKETPLACE_UNOFFICIAL_URL` defaults.
 
 ## Submit a Community listing (user sellers)
 
@@ -37,6 +38,7 @@ Private / operator catalogs stay under **Marketplace → Local** in the app.
 catalog/official/index.json    ReBotics Official shelf
 catalog/community/index.json   Community (user seller) shelf
 catalog/index.json             Legacy Official alias (keep in sync)
+catalog/unofficial/index.json  Legacy Community alias (keep in sync)
 packs/<id>/                    Official pack manifests + bundles
 plugins/<id>/                  Official plugin catalog mirrors
 schemas/                       JSON Schema for CI validation
