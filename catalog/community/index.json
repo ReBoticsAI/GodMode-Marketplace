@@ -1,6 +1,22 @@
 {
   "version": 2,
   "repoBase": "https://raw.githubusercontent.com/ReBoticsAI/GodMode-Marketplace/main",
-  "updatedAt": "2026-08-02T00:00:00.000Z",
-  "entries": []
+  "updatedAt": "2026-08-16T00:10:42.000Z",
+  "entries": [
+    {
+      "id": "workspace-pulse",
+      "kind": "plugin",
+      "installType": "plugin",
+      "title": "Workspace Pulse",
+      "description": "Tiny OSS health-ping tool. Adds a workspace_pulse_ping Bridge tool that returns process health for this workspace.",
+      "version": "0.1.0",
+      "author": "Dane Schell",
+      "tags": ["community", "health", "tools", "oss"],
+      "pluginRepo": "https://github.com/DaneSchell/godmode-workspace-pulse",
+      "pluginRef": "be72adcf93dce8fcb5b49de2ee45684386474427",
+      "pluginDigest": "be72adcf93dce8fcb5b49de2ee45684386474427",
+      "artifactSha256": "97fc7ea41aab6ecd361397fea56ed728fdd9636b04d04996b5de0bda280cc448",
+      "ciRunUrl": "https://github.com/DaneSchell/godmode-workspace-pulse/actions/runs/31916550440"
+    }
+  ]
 }
