@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "description": "Deterministic prohibited-category terms for Community catalog intake. Aligned with GodMode Marketplace ToS prohibited listings. Match is case-insensitive whole-word or phrase on id, title, description, and tags.",
+  "categories": [
+    {
+      "id": "gambling",
+      "label": "Gambling and games of chance",
+      "terms": [
+        "gambling",
+        "casino",
+        "sportsbook",
+        "sports betting",
+        "online betting",
+        "poker room",
+        "slot machine",
+        "roulette",
+        "blackjack casino",
+        "lottery ticket"
+      ]
+    },
+    {
+      "id": "adult",
+      "label": "Adult sexual content and services",
+      "terms": [
+        "porn",
+        "pornography",
+        "xxx",
+        "adult sexual",
+        "escort service",
+        "sex work",
+        "onlyfans adult"
+      ]
+    },
+    {
+      "id": "weapons_illegal",
+      "label": "Weapons, explosives, and illegal goods",
+      "terms": [
+        "illegal weapons",
+        "firearm sales",
+        "buy guns",
+        "explosives for sale",
+        "illegal drugs",
+        "narcotics sales",
+        "controlled substance sales"
+      ]
+    },
+    {
+      "id": "malware_fraud",
+      "label": "Malware, fraud, and credential theft",
+      "terms": [
+        "malware",
+        "ransomware",
+        "credential theft",
+        "phishing kit",
+        "steal passwords",
+        "keylogger",
+        "bank fraud",
+        "carding"
+      ]
+    }
+  ]
+}

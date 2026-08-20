@@ -17,3 +17,23 @@ jobs:
       - run: npm ci
       - run: npm run validate
       - run: npm test
+
+  policy:
+    name: marketplace-policy-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Community catalog policy check
+        run: npm run policy-check
+      - name: Upload policy audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: policy-check
+          path: policy-out/policy-check.json
+          if-no-files-found: ignore

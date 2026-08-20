@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "validate": "node scripts/validate-catalog.mjs",
+    "policy-check": "node scripts/policy-check.mjs",
     "test": "node --test tests/*.test.mjs"
   },
   "devDependencies": {
