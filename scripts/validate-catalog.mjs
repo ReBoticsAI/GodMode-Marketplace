@@ -96,8 +96,21 @@ async function validateCatalogFile(relativePath, { requireLocalArtifacts }) {
 
   const pluginCount = catalog.entries.filter((entry) => entry.installType === "plugin").length;
   const cloneCount = catalog.entries.filter((entry) => entry.installType === "clone").length;
+  const liveCount = catalog.entries.filter((entry) => entry.deliveryMode === "live").length;
+  for (const entry of catalog.entries) {
+    if (entry.deliveryMode === "live") {
+      assert.equal(
+        entry.installType,
+        "clone",
+        `${entry.id}: deliveryMode live requires installType clone`
+      );
+      assert.ok(entry.bundlePath, `${entry.id}: deliveryMode live requires bundlePath`);
+      assert.ok(entry.pluginRepo, `${entry.id}: deliveryMode live requires pluginRepo`);
+      assert.ok(entry.pluginRef, `${entry.id}: deliveryMode live requires pluginRef`);
+    }
+  }
   console.log(
-    `Validated ${relativePath}: ${catalog.entries.length} entries (${pluginCount} plugins, ${cloneCount} packs` +
+    `Validated ${relativePath}: ${catalog.entries.length} entries (${pluginCount} plugins, ${cloneCount} packs, ${liveCount} live` +
       `${requireVerifyProof ? ", verify-proof required" : ""})`
   );
   return catalog;

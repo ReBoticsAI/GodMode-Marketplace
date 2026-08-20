@@ -6,8 +6,25 @@
   "required": ["id", "kind", "installType", "title", "description", "version", "author"],
   "properties": {
     "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
-    "kind": { "enum": ["bundle", "plugin"] },
+    "kind": {
+      "enum": [
+        "bundle",
+        "plugin",
+        "skill",
+        "agent",
+        "page",
+        "workflow",
+        "artifact",
+        "rule",
+        "knowledge",
+        "dataset"
+      ]
+    },
     "installType": { "enum": ["clone", "plugin"] },
+    "deliveryMode": {
+      "enum": ["clone", "live"],
+      "description": "How buyers receive the listing. clone = portable copy; live = Shared grant on seller host. Default clone."
+    },
     "title": { "type": "string", "minLength": 1 },
     "description": { "type": "string" },
     "version": {
@@ -46,9 +63,6 @@
         "required": ["bundlePath"],
         "not": {
           "anyOf": [
-            { "required": ["pluginRepo"] },
-            { "required": ["pluginRef"] },
-            { "required": ["pluginDigest"] },
             { "required": ["artifactSha256"] },
             { "required": ["ciRunUrl"] }
           ]
@@ -63,6 +77,18 @@
       "then": {
         "required": ["pluginRepo", "pluginRef"],
         "not": { "required": ["bundlePath"] }
+      }
+    },
+    {
+      "if": {
+        "properties": { "deliveryMode": { "const": "live" } },
+        "required": ["deliveryMode"]
+      },
+      "then": {
+        "properties": {
+          "installType": { "const": "clone" }
+        },
+        "required": ["installType", "bundlePath", "pluginRepo", "pluginRef"]
       }
     }
   ],

@@ -58,30 +58,27 @@ grants in GodMode core. Those remain separate trust layers.
 | Field | Required | Description |
 |-------|----------|-------------|
 | `id` | yes | Stable slug (kebab-case) |
-| `kind` | yes | `bundle` or `plugin` |
+| `kind` | yes | `bundle`, `plugin`, or a clone pack kind (`skill`, `agent`, `page`, …) |
 | `installType` | yes | `clone` (portable bundle) or `plugin` (GitHub repo) |
+| `deliveryMode` | no | `clone` (default) or `live`. Live = buyer gets a Shared grant on the seller host, not a copy. Community Live Share only. |
 | `title` | yes | Display name |
 | `description` | yes | Short summary |
 | `version` | yes | Semver |
 | `author` | yes | Name or org |
 | `tags` | no | String array |
-| `bundlePath` | clone | Path to `bundle.json` relative to repo root |
-| `pluginRepo` | plugin | Public `https://github.com/owner/repo` URL |
-| `pluginRef` | plugin | Immutable tag or commit SHA (floating `main` rejected) |
+| `bundlePath` | clone | Path to `bundle.json` relative to repo root (Official packs) or seller repo root (Community remote packs / live) |
+| `pluginRepo` | plugin; Community clone/live | Public `https://github.com/owner/repo` URL |
+| `pluginRef` | plugin; Community clone/live | Immutable tag or commit SHA (floating `main` rejected) |
 | `pluginDigest` | no | Expected commit SHA after checkout (buyer pin check) |
 | `ciRunUrl` | plugin (new) | Green Actions run URL for this `pluginRef` |
 | `artifactSha256` | no | Aggregate SHA-256 of verified build artifacts |
 
 ## Install types
 
-- **clone**: GodMode resolves and fetches `bundlePath`, then passes the
-  version-1 portable bundle to its importer.
-- **plugin**: GodMode clones the pinned `pluginRef`, builds a missing Bridge
-  entry, validates and loads `godmode.plugin.json`, and installs for the tenant.
+- **clone** (`deliveryMode` omitted or `clone`): GodMode resolves and fetches `bundlePath`, then passes the version-1 portable bundle to its importer. Official packs may live in this repo; Community packs pin a seller GitHub repo via `pluginRepo` + `pluginRef`.
+- **clone** + **`deliveryMode: live`**: Same pin (`pluginRepo`, `pluginRef`, `bundlePath`). After merge, the seller **binds** a live workspace resource whose export must match the pinned bundle hash. Buyers get a Shared grant on the seller host, not a copy. Material updates require a new catalog PR, merge, and re-bind.
+- **plugin**: GodMode clones the pinned `pluginRef`, builds a missing Bridge entry, validates and loads `godmode.plugin.json`, and installs for the tenant.
 
 ## In-app Community Sell
 
-GodMode Cloud also supports **Marketplace → Sell** for portable entity listings
-(user-to-user). Catalog PRs to `catalog/community/` are the gated path for
-**plugins** that need CI + pins. Keep both aligned with the one Community seller
-story; Official stays ReBotics-only.
+GodMode Cloud **Marketplace → Sell** publishes from owned Community catalog rows only. Use **Submit to Community catalog** (or a manual PR) for intake. Free Shared sidebar grants stay outside Marketplace and do not need catalog pins.
