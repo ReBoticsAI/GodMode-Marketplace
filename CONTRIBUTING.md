@@ -22,6 +22,22 @@ Public sellers submit to **Community**. Do not open PRs that add third-party plu
 - [ ] No secrets, API keys, or operator-specific content
 - [ ] Title and description are clear for OSS users
 - [ ] Tags help browse/filter
+- [ ] Title, description, id, and tags pass **policy CI** (no prohibited categories)
+
+## Policy CI (prohibited listings)
+
+Every Community catalog PR runs **`marketplace-policy-check`** (alongside schema validate and plugin pin gates). The check scans each Community entry `id`, `title`, `description`, and `tags` against a deterministic blocklist aligned with GodMode Marketplace ToS prohibited categories, including:
+
+- Gambling and games of chance
+- Adult sexual content and services
+- Weapons, explosives, and illegal goods
+- Malware, fraud, and credential theft
+
+Obvious matches fail the PR. The job writes an audit summary with `policyCheckVersion` and the Actions run URL.
+
+An optional LLM policy gate is stubbed behind `POLICY_LLM_ENABLED=1` for a future provider. Leave it off until a model and secret are configured; enabling it without a provider fails closed.
+
+Policy CI applies to **plugin**, **clone**, and **live** (`deliveryMode: live`) Community entries. It does not replace plugin verify (`ciRunUrl`) or buyer Bridge install pins.
 
 ## PR checklist (Official / ReBotics only)
 
