@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repoBase": "https://raw.githubusercontent.com/ReBoticsAI/GodMode-Marketplace/main",
-  "updatedAt": "2026-08-20T18:21:07.000Z",
+  "updatedAt": "2026-08-20T18:45:08.000Z",
   "entries": [
     {
       "id": "community-ping",
@@ -57,8 +57,8 @@
         "smoke"
       ],
       "pluginRepo": "https://github.com/ReBoticsAI/godmode-live-share-smoke",
-      "pluginRef": "ca5248b18438f5c43c5177db475fb896c6bb9970",
-      "pluginDigest": "ca5248b18438f5c43c5177db475fb896c6bb9970",
+      "pluginRef": "ff221e7cd18051279d404514cc8cf9c5a3ad1122",
+      "pluginDigest": "ff221e7cd18051279d404514cc8cf9c5a3ad1122",
       "bundlePath": "bundle.json"
     }
   ]
