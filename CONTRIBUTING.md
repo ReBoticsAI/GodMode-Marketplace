@@ -1,4 +1,4 @@
-# Contributing to GodMode Marketplace
+﻿# Contributing to GodMode Marketplace
 
 ## Two catalogs (one seller path)
 
@@ -45,7 +45,7 @@ Policy CI applies to **plugin**, **clone**, and **live** (`deliveryMode: live`) 
 - [ ] Local `manifest.json` id, kind, and version match the catalog entry
 - [ ] Clone entry has a version-1 `kind: "bundle"` `bundle.json` at `bundlePath`
 - [ ] Plugin pin + optional `ciRunUrl` / digest as for Community plugins
-- [ ] Author is ReBotics / GodMode
+- [ ] Author is ReBotics AI (Official) or the publisher GitHub login (Community)
 
 ## Seller intake (plugin verify)
 
@@ -74,13 +74,13 @@ grants in GodMode core. Those remain separate trust layers.
 | Field | Required | Description |
 |-------|----------|-------------|
 | `id` | yes | Stable slug (kebab-case) |
-| `kind` | yes | `bundle`, `plugin`, or a clone pack kind (`skill`, `agent`, `page`, …) |
+| `kind` | yes | `bundle`, `plugin`, or a clone pack kind (`skill`, `agent`, `page`, â€¦) |
 | `installType` | yes | `clone` (portable bundle) or `plugin` (GitHub repo) |
 | `deliveryMode` | no | `clone` (default) or `live`. Live = buyer gets a Shared grant on the seller host, not a copy. Community Live Share only. |
 | `title` | yes | Display name |
 | `description` | yes | Short summary |
 | `version` | yes | Semver |
-| `author` | yes | Name or org |
+| `author` | yes | **GitHub login** of the publisher (Community). Official curated entries use `ReBotics AI`. Do not use a display name with spaces. |
 | `tags` | no | String array |
 | `bundlePath` | clone | Path to `bundle.json` relative to repo root (Official packs) or seller repo root (Community remote packs / live) |
 | `pluginRepo` | plugin; Community clone/live | Public `https://github.com/owner/repo` URL |
@@ -97,4 +97,5 @@ grants in GodMode core. Those remain separate trust layers.
 
 ## In-app Community Sell
 
-GodMode Cloud **Marketplace → Sell** publishes from owned Community catalog rows only. Use **Submit to Community catalog** (or a manual PR) for intake. Free Shared sidebar grants stay outside Marketplace and do not need catalog pins.
+GodMode Cloud **Marketplace â†’ Sell** publishes from owned Community catalog rows only. Use **Submit to Community catalog** (or a manual PR) for intake. Free Shared sidebar grants stay outside Marketplace and do not need catalog pins.
+

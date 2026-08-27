@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repoBase": "https://raw.githubusercontent.com/ReBoticsAI/GodMode-Marketplace/main",
-  "updatedAt": "2026-08-20T18:45:08.000Z",
+  "updatedAt": "2026-08-27T21:50:36.000Z",
   "entries": [
     {
       "id": "community-ping",
@@ -10,7 +10,7 @@
       "title": "Community Ping",
       "description": "Tiny OSS health-ping tool. Adds a community_ping Bridge tool that returns process health and can optionally fetch example.com.",
       "version": "0.1.0",
-      "author": "Dane Schell",
+      "author": "DaneSchell",
       "tags": [
         "community",
         "health",
@@ -29,7 +29,7 @@
       "title": "Workspace Pulse",
       "description": "Tiny OSS health-ping tool. Adds a workspace_pulse_ping Bridge tool that returns process health for this workspace.",
       "version": "0.1.0",
-      "author": "Dane Schell",
+      "author": "DaneSchell",
       "tags": [
         "community",
         "health",
